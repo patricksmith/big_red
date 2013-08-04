@@ -88,19 +88,19 @@ class BigRedButton(object):
             previous = status
 
     def on_unknown(self):
-        print 'the button is now in an unknown state'
+        """The device is in an unknown state."""
 
     def on_cover_open(self):
-        print 'the button cover has been opened!'
+        """The device's cover has been opened."""
 
     def on_cover_close(self):
-        print 'the button cover has been closed'
+        """The device's cover has been closed."""
 
     def on_button_press(self):
-        print 'BOOM!'
+        """The big red button has been pressed."""
 
     def on_button_release(self):
-        print 'released'
+        """The big red button has been released."""
 
     def _handle_new_status(self, new_status):
         callbacks = {
