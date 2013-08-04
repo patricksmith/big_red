@@ -72,24 +72,24 @@ class BigRedButton(object):
             sleep(0.1)
             previous = status
 
-    def _handle_unknown(self):
+    def on_unknown(self):
         print 'the button is now in an unknown state'
 
-    def _handle_open(self):
+    def on_cover_open(self):
         print 'the button cover has been opened!'
 
-    def _handle_close(self):
+    def on_cover_close(self):
         print 'the button cover has been closed'
 
-    def _handle_button_press(self):
+    def on_button_press(self):
         print 'BOOM!'
 
     def _handle_new_status(self, new_status):
         callbacks = {
-            'unknown': self._handle_unknown,
-            'open': self._handle_open,
-            'closed': self._handle_close,
-            'depressed': self._handle_button_press,
+            'unknown': self.on_unknown,
+            'open': self.on_cover_open,
+            'closed': self.on_cover_close,
+            'depressed': self.on_button_press,
         }
         method = callbacks[new_status]
         method()
