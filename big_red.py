@@ -23,6 +23,8 @@ class ButtonStatus(object):
     """The button is being pressed."""
     OPEN = 23
     """The button cover is open."""
+    RELEASED = 999
+    """The button has been released."""
 
 
 class BigRedButton(object):
@@ -71,7 +73,11 @@ class BigRedButton(object):
         while True:
             status = self._get_status()
             if previous != status:
-                self._handle_new_status(status)
+                if previous == ButtonStatus.DEPRESSED:
+                    self._handle_new_status(
+                        ButtonStatus.RELEASED)
+                else:
+                    self._handle_new_status(status)
             sleep(0.1)
             previous = status
 
@@ -87,11 +93,15 @@ class BigRedButton(object):
     def on_button_press(self):
         print 'BOOM!'
 
+    def on_button_release(self):
+        print 'released'
+
     def _handle_new_status(self, new_status):
         callbacks = {
             ButtonStatus.OPEN: self.on_cover_open,
             ButtonStatus.CLOSED: self.on_cover_close,
             ButtonStatus.DEPRESSED: self.on_button_press,
+            ButtonStatus.RELEASED: self.on_button_release,
         }
         method = callbacks.get(new_status, self.on_unknown)
         method()
