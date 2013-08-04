@@ -13,11 +13,17 @@ import usb.core
 VENDOR_ID = 0x1d34
 PRODUCT_ID = 0x000d
 
-statuses = {
-    21: 'closed',
-    22: 'depressed',
-    23: 'open',
-}
+
+class ButtonStatus(object):
+    """Maps status codes to readable statuses."""
+
+    CLOSED = 21
+    """The button cover is closed."""
+    DEPRESSED = 22
+    """The button is being pressed."""
+    OPEN = 23
+    """The button cover is open."""
+
 
 class BigRedButton(object):
 
@@ -41,7 +47,7 @@ class BigRedButton(object):
     def _get_status(self):
         self._send_query()
         response = self._read_response()
-        return statuses.get(response[0], 'unkown')
+        return response[0]
 
     def _send_query(self):
         command = bytearray(8)
@@ -86,12 +92,11 @@ class BigRedButton(object):
 
     def _handle_new_status(self, new_status):
         callbacks = {
-            'unknown': self.on_unknown,
-            'open': self.on_cover_open,
-            'closed': self.on_cover_close,
-            'depressed': self.on_button_press,
+            ButtonStatus.OPEN: self.on_cover_open,
+            ButtonStatus.CLOSED: self.on_cover_close,
+            ButtonStatus.DEPRESSED: self.on_button_press,
         }
-        method = callbacks[new_status]
+        method = callbacks.get(new_status, self.on_unknown)
         method()
 
 
