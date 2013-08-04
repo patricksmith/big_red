@@ -35,11 +35,8 @@ class BigRedButton(object):
             raise ValueError('Device not found')
 
         interface = self.device[0][(0, 0)]
-        try:
-            if self.device.is_kernel_driver_active(interface):
-                self.device.detach_kernel_driver(interface)
-        except USBError:
-            print 'no kernel driver to detach'
+        if self.device.is_kernel_driver_active(interface):
+            self.device.detach_kernel_driver(interface)
 
         self.device.set_configuration()
         self.endpoint = self.device[0][(0, 0)][0]
