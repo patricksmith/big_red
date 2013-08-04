@@ -69,6 +69,12 @@ class BigRedButton(object):
         )
 
     def run(self):
+        try:
+            self._run_loop()
+        except KeyboardInterrupt:
+            pass
+
+    def _run_loop(self):
         previous = self._get_status()
         while True:
             status = self._get_status()
