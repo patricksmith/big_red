@@ -36,7 +36,7 @@ class BigRedButton(object):
         if self.device is None:
             raise ValueError('Device not found')
 
-        interface = self.device[0][(0, 0)]
+        interface = self.device[0][(0, 0)].iInterface
         if self.device.is_kernel_driver_active(interface):
             self.device.detach_kernel_driver(interface)
 
